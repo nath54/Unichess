@@ -49,7 +49,51 @@ class Pion(Piece):
         #
         COUPS = []
         #
+        if self.camps == 0:
+            #
+            p = (self.pos[0], self.pos[1]+2)
+            if self.pos[1] == 1 and plateau[p[1]][p[0]] is None:
+                COUPS.append(p)
+            #
+            if self.pos[1] + 1 < 8:
+                p = (self.pos[0], self.pos[1]+1)
+                if plateau[p[1]][p[0]] is None:
+                    COUPS.append(p)
+                #
+                if self.pos[0] + 1 < 8:
+                    p = (self.pos[0]+1, self.pos[1]+1)
+                    c = plateau[p[1]][p[0]]
+                    if c is not None and c.camps != self.camps:
+                        COUPS.append(p)
+                #
+                if self.pos[0]-1 >= 0:
+                    p = (self.pos[0]-1, self.pos[1]+1)
+                    c = plateau[p[1]][p[0]]
+                    if c is not None and c.camps != self.camps:
+                        COUPS.append(p)
 
+        elif self.camps == 1:
+            #
+            p = (self.pos[0], self.pos[1]-2)
+            if self.pos[1] == 6 and plateau[p[1]][p[0]] is None:
+                COUPS.append(p)
+            #
+            if self.pos[1] - 1 >= 0:
+                p = (self.pos[0], self.pos[1]-1)
+                if plateau[p[1]][p[0]] is None:
+                    COUPS.append(p)
+                #
+                if self.pos[0] + 1 < 8:
+                    p = (self.pos[0]+1, self.pos[1]-1)
+                    c = plateau[p[1]][p[0]]
+                    if c is not None and c.camps != self.camps:
+                        COUPS.append(p)
+                #
+                if self.pos[0] - 1 >= 0:
+                    p = (self.pos[0]-1, self.pos[1]-1)
+                    c = plateau[p[1]][p[0]]
+                    if c is not None and c.camps != self.camps:
+                        COUPS.append(p)
         #
         return COUPS
 
@@ -110,6 +154,13 @@ class Cavalier(Piece):
             plateau = self.game.plateau
         #
         COUPS = []
+        #
+        for (x,y) in [(2,1), (-2,1), (2,-1), (-2,-1), (1,2), (1, -2), (-1, 2), (-1, -2)]:
+            if self.pos[1] + y >= 0 and self.pos[1] + y < 8 and self.pos[0] + x >= 0 and self.s[0] + x < 8:
+                c = plateau[self.pos[1]+y][self.pos[0]+x]
+                if c is None or c.camps != self.camps:
+                    COUPS.append((self.pos[0]+x, self.pos[1]+y))
+        #
         return COUPS
 
 
@@ -150,6 +201,43 @@ class Tour(Piece):
             plateau = self.game.plateau
         #
         COUPS = []
+        #
+        for x in range(self.pos[0]+1, 8):
+            c = plateau[self.pos[1]][x]
+            if c is None:
+                COUPS.append((x, self.pos[1]))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((x, self.pos[1]))
+                break
+        #
+        for x in range(self.pos[0]-1, -1, -1):
+            c = plateau[self.pos[1]][x]
+            if c is None:
+                COUPS.append((x, self.pos[1]))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((x, self.pos[1]))
+                break
+        #
+        for y in range(self.pos[1]+1, 8):
+            c = plateau[y][self.pos[0]]
+            if c is None:
+                COUPS.append((self.pos[0], y))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((self.pos[0], y))
+                break
+        #
+        for y in range(self.pos[1]-1, -1, -1):
+            c = plateau[y][self.pos[0]]
+            if c is None:
+                COUPS.append((self.pos[0], y))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((self.pos[0], y))
+                break
+        #
         return COUPS
 
 

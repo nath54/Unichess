@@ -35,7 +35,7 @@ ENDC = '\033[m' # reset to the defaults
 def cl(cl1, cl2):
     return f'\x1b[6;{clrs1[cl1]};{clrs2[cl2]}m'
 
-def aff(game):
+def aff(game, clrs = False):
     # Intro
     print("-" * 20)
     print(f"Tour n°{game.tour}")
@@ -46,20 +46,26 @@ def aff(game):
     for y in range(8):
         txt = " "+CY[y]+" "
         for x in range(8):
-            if (x+y) % 2 == 0:
-                txt += cl("black","yellow")
-                bg = "yellow"
-            else:
-                txt += cl("black","blue")
-                bg = "blue"
+            if clrs:
+                if (x+y) % 2 == 0:
+                    txt += cl("black","yellow")
+                    bg = "yellow"
+                else:
+                    txt += cl("black","blue")
+                    bg = "blue"
             if game.plateau[y][x] is None:
                 txt += "_"
             else:
                 p = game.plateau[y][x]
-                txt += cl(["white","black"][p.camps], bg)
-                txt += chr(pions[0][p.id_piece])
+                if clrs:
+                    txt += cl(["white","black"][p.camps], bg)
+                    txt += chr(pions[0][p.id_piece])
+                else:
+                    txt += chr(pions[p.camps][p.id_piece])
+                
             txt += " " # Pour séparer les pieces
-            txt += ENDC
+            if clrs:
+                txt += ENDC
         txt += ""+CY[y]
         print(txt)
     print(" \\ " + " ".join(list(CX))+ " /")

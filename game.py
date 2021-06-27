@@ -189,12 +189,23 @@ class Game:
                     input("\nPress Enter to Continue\n")
                     continue # On retourne jouer
                 c = (CX.index(c[0].upper()), CY.index(c[1]))
-                p = self.game.plateau[c[1]][c[0]]
-                if p != None:
+                p = self.plateau[c[1]][c[0]]
+                if p is None:
                     print("Il n'y a pas de pièces ici !")
                     input("\nPress Enter to Continue\n")
                     continue # On retourne jouer
                 
+                COUPS = p.coups_pos()
+                if len(COUPS) == 0:
+                    print("La pièce ne peut pas bouger !")
+                    input("\nPress Enter to Continue\n")
+                    continue # On retourne jouer
+                else:
+                    print("La pièce peut bouger sur les cases : ")
+                    for c in COUPS:
+                        print(f"   - {CX[c[0]]}{CY[c[1]]}")
+                    input("\nPress Enter to Continue\n")
+                    continue # On retourne jouer
 
             # Si ce n'est pas une autre commande
             l = j.split(" ")
