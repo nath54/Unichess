@@ -309,6 +309,56 @@ class Dame(Piece):
             plateau = self.game.plateau
         #
         COUPS = []
+        #
+        for x in range(self.pos[0]+1, 8):
+            c = plateau[self.pos[1]][x]
+            if c is None:
+                COUPS.append((x, self.pos[1]))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((x, self.pos[1]))
+                break
+        #
+        for x in range(self.pos[0]-1, -1, -1):
+            c = plateau[self.pos[1]][x]
+            if c is None:
+                COUPS.append((x, self.pos[1]))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((x, self.pos[1]))
+                break
+        #
+        for y in range(self.pos[1]+1, 8):
+            c = plateau[y][self.pos[0]]
+            if c is None:
+                COUPS.append((self.pos[0], y))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((self.pos[0], y))
+                break
+        #
+        for y in range(self.pos[1]-1, -1, -1):
+            c = plateau[y][self.pos[0]]
+            if c is None:
+                COUPS.append((self.pos[0], y))
+            else:
+                if c.camps != self.camps:
+                    COUPS.append((self.pos[0], y))
+                break
+        # Diagonales
+        for (dx, dy) in [(1,1), (1,-1), (-1,1), (-1,-1)]:
+            x,y = self.pos
+            while x + dx >= 0 and x + dx < 8 and y + dy >= 0 and y + dy < 8:
+                x += dx
+                y += dy
+                c = plateau[y][x]
+                if c is None:
+                    COUPS.append((x, y))
+                else:
+                    if c.camps != self.camps:
+                        COUPS.append((x, y))
+                    break
+        #
         return COUPS
 
 
@@ -336,9 +386,10 @@ class Roi(Piece):
             for y in range(-1, 2):
                 if not (x == 0 and y == 0):
                     X, Y = self.pos[0] + x, self.pos[1] + y
-                    c = plateau[Y][X]
-                    if c is None or c.camps != self.camps:
-                        COUPS.append((X, Y))
+                    if X >= 0 and X < 8 and Y >= 0 and Y < 8:
+                        c = plateau[Y][X]
+                        if c is None or c.camps != self.camps:
+                            COUPS.append((X, Y))
         return COUPS
 
 

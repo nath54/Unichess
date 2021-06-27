@@ -35,7 +35,7 @@ ENDC = '\033[m' # reset to the defaults
 def cl(cl1, cl2):
     return f'\x1b[6;{clrs1[cl1]};{clrs2[cl2]}m'
 
-def aff(game, clrs = False):
+def aff(game, clrs = False, quadr = False, lignes = True):
     # Intro
     print("-" * 20)
     print(f"Tour n°{game.tour}")
@@ -54,7 +54,16 @@ def aff(game, clrs = False):
                     txt += cl("black","blue")
                     bg = "blue"
             if game.plateau[y][x] is None:
-                txt += "_"
+                if lignes:
+                    if quadr:
+                        if (x+y) % 2 == 0:
+                            txt += "_"
+                        else:
+                            txt += "#"
+                    else:
+                        txt += "_"
+                else:
+                    txt += " "
             else:
                 p = game.plateau[y][x]
                 if clrs:
