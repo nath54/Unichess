@@ -132,8 +132,18 @@ class Fou(Piece):
             plateau = self.game.plateau
         #
         COUPS = []
-        #
-        
+        for (dx, dy) in [(1,1), (1,-1), (-1,1), (-1,-1)]:
+            x,y = self.pos
+            while x + dx >= 0 and x + dx < 8 and y + dy >= 0 and y + dy < 8:
+                x += dx
+                y += dy
+                c = plateau[y][x]
+                if c is None:
+                    COUPS.append((x, y))
+                else:
+                    if c.camps != self.camps:
+                        COUPS.append((x, y))
+                    break
         #
         return COUPS
 
