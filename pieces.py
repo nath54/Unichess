@@ -132,6 +132,9 @@ class Fou(Piece):
             plateau = self.game.plateau
         #
         COUPS = []
+        #
+        
+        #
         return COUPS
 
 
@@ -156,7 +159,7 @@ class Cavalier(Piece):
         COUPS = []
         #
         for (x,y) in [(2,1), (-2,1), (2,-1), (-2,-1), (1,2), (1, -2), (-1, 2), (-1, -2)]:
-            if self.pos[1] + y >= 0 and self.pos[1] + y < 8 and self.pos[0] + x >= 0 and self.s[0] + x < 8:
+            if self.pos[1] + y >= 0 and self.pos[1] + y < 8 and self.pos[0] + x >= 0 and self.pos[0] + x < 8:
                 c = plateau[self.pos[1]+y][self.pos[0]+x]
                 if c is None or c.camps != self.camps:
                     COUPS.append((self.pos[0]+x, self.pos[1]+y))
